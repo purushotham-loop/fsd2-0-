@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Student Portal</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --bg: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top left, #1e1b4b, #0f172a);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* Glassmorphism Cards */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Header Profile */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+    }
+
+    .user-details h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .user-details p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .badges-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .tag {
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* Layout Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Search Bar */
+    .search-box {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: #fff;
+      margin-bottom: 1rem;
+      outline: none;
+    }
+
+    .search-box:focus {
+      border-color: var(--primary);
+    }
+
+    /* Course Items */
+    .course-item {
+      background: rgba(15, 23, 42, 0.4);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .course-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .course-top {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 3px;
+    }
+
+    /* Interactive Calculator */
+    .calc-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    input, select, button {
+      font-size: 0.9rem;
+    }
+
+    .calc-row input, .calc-row select {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .calc-row input[type="text"] { flex: 2; }
+    .calc-row select { flex: 1; }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .result-display {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Profile Card -->
+    <header class="glass-card profile-header">
+      <div class="avatar">AJ</div>
+      <div class="user-details">
+        <h1>Alex Johnson</h1>
+        <p>B.S. Computer Science &bull; Class of 2026</p>
+        <div class="badges-row">
+          <span class="tag">ID: CS-2026-8941</span>
+          <span class="tag">Dean's List</span>
+          <span class="tag">Semester 6</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <div class="grid">
+
+      <!-- Course Tracker -->
+      <section class="glass-card">
+        <h2>Course Tracker 📚</h2>
+        <input type="text" id="courseSearch" class="search-box" placeholder="Filter courses...">
+        
+        <div id="courseList">
+          <div class="course-item" data-name="web development">
+            <div class="course-top">
+              <span>Web Development</span>
+              <span style="color: var(--accent);">95% (A)</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 95%;"></div></div>
+          </div>
+
+          <div class="course-item" data-name="data structures algorithms">
+            <div class="course-top">
+              <span>Data Structures</span>
+              <span style="color: #818cf8;">88% (A-)</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 88%;"></div></div>
+          </div>
+
+          <div class="course-item" data-name="database systems">
+            <div class="course-top">
+              <span>Database Systems</span>
+              <span style="color: #f59e0b;">83% (B+)</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 83%;"></div></div>
+          </div>
+
+          <div class="course-item" data-name="computer networks">
+            <div class="course-top">
+              <span>Computer Networks</span>
+              <span style="color: var(--accent);">91% (A)</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 91%;"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dynamic GPA Calculator -->
+      <section class="glass-card">
+        <h2>Dynamic GPA Calculator 🧮</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+          Add your subjects and grades to calculate your exact GPA:
+        </p>
+
+        <div id="gradeEntries">
+          <div class="calc-row">
+            <input type="text" placeholder="Subject Name" value="Web Dev">
+            <select class="grade-select">
+              <option value="4.0">A (4.0)</option>
+              <option value="3.7">A- (3.7)</option>
+              <option value="3.3">B+ (3.3)</option>
+              <option value="3.0">B (3.0)</option>
+            </select>
+          </div>
+          <div class="calc-row">
+            <input type="text" placeholder="Subject Name" value="Data Structures">
+            <select class="grade-select">
+              <option value="4.0">A (4.0)</option>
+              <option value="3.7" selected>A- (3.7)</option>
+              <option value="3.3">B+ (3.3)</option>
+              <option value="3.0">B (3.0)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+          <button class="btn" id="addSubjectBtn">+ Add Subject</button>
+          <button class="btn" id="calculateBtn" style="background: var(--accent);">Calculate</button>
+        </div>
+
+        <div class="result-display">
+          Current GPA: <span id="gpaResult">3.85</span>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Search Filter Logic
+    const searchInput = document.getElementById('courseSearch');
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      document.querySelectorAll('.course-item').forEach(item => {
+        const name = item.getAttribute('data-name');
+        item.style.display = name.includes(query) ? 'block' : 'none';
+      });
+    });
+
+    // Dynamic GPA Calculator Logic
+    const entriesContainer = document.getElementById('gradeEntries');
+    const addBtn = document.getElementById('addSubjectBtn');
+    const calcBtn = document.getElementById('calculateBtn');
+    const gpaResult = document.getElementById('gpaResult');
+
+    addBtn.addEventListener('click', () => {
+      const row = document.createElement('div');
+      row.className = 'calc-row';
+      row.innerHTML = `
+        <input type="text" placeholder="Subject Name">
+        <select class="grade-select">
+          <option value="4.0">A (4.0)</option>
+          <option value="3.7">A- (3.7)</option>
+          <option value="3.3">B+ (3.3)</option>
+          <option value="3.0">B (3.0)</option>
+          <option value="2.0">C (2.0)</option>
+        </select>
+        <button class="btn btn-danger" onclick="this.parentElement.remove()">✕</button>
+      `;
+      entriesContainer.appendChild(row);
+    });
+
+    calcBtn.addEventListener('click', () => {
+      const selects = document.querySelectorAll('.grade-select');
+      if (selects.length === 0) {
+        gpaResult.textContent = '0.00';
+        return;
+      }
+      
+      let total = 0;
+      selects.forEach(select => {
+        total += parseFloat(select.value);
+      });
+
+      const average = total / selects.length;
+      gpaResult.textContent = average.toFixed(2);
+    });
+  </script>
+</body>
+</html>
