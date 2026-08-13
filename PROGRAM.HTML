@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Elements Using Selectors</title>
+</head>
+<body>
+
+    <h1 id="heading">Welcome to JavaScript</h1>
+
+    <p class="text">This is paragraph 1.</p>
+    <p class="text">This is paragraph 2.</p>
+
+    <button onclick="selectElements()">Click Me</button>
+
+    <script>
+        function selectElements() {
+
+            // Select element by ID
+            document.getElementById("heading").style.color = "blue";
+
+            // Select first element by class
+            document.querySelector(".text").style.color = "red";
+
+            // Select all elements by class
+            let paragraphs = document.querySelectorAll(".text");
+
+            paragraphs.forEach(function(p) {
+                p.style.backgroundColor = "yellow";
+            });
+
+            alert("Elements selected successfully!");
+        }
+    </script>
+
+</body>
+</html>
